@@ -1,29 +1,22 @@
 angular.module('con4', [])
 	.controller('GameController', function($scope){
+		var gc = this;
 		
 		$scope.newGame = function(){
-			/**
-			 * set victory to false
-			 * $scope.grid = buildGrid();
-			 * This is connect 4 so red plays first
-			 */
+			gc.victory = false;
+			$scope.grid = buildGrid();
+			gc.activePlayer = 'red';
 		}
 		
 		function buildGrid(){
-			//Build a 6x7 grid object and return it from this function
-			//Each cell of the grid is an object that knows its coords
-			/**
-			 * Cell Schema
-			 * {
-			 * 		row: number,
-			 * 		col: number
-			 * }
-			 */
-			
-			//Once you finishe building your grid make sure $scope.newGame is setting 
-			//$scope.grid = buildGrid();
-			//If your build grid is working correctly you can start up your server to see the grid
-			//drawn to the screen.
+			var grid = [];
+			for(var i = 0; i < 6; i++){
+				grid[i] = [];
+				for(var j=0; j < 7; j++){
+					grid[i][j] = {row: i, col: j };
+				}
+			}
+			return grid;
 		}
 		
 		$scope.dropToken = function(col){
@@ -41,6 +34,10 @@ angular.module('con4', [])
 			 * found a cell that already has a token
 			 */
 			var row = checkSouth(0, col);
+			$scope.grid[row][col];
+			cell.hasToken = true;
+			cell.color = $scope.activePlayer;
+			checkVictory(cell);
 
 			/**
 			 * Once the row is identified
